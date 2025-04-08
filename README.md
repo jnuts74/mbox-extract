@@ -1,4 +1,3 @@
-Thank you for sharing your script. Here's an updated README file that reflects the details of your script and reflects that no additional dependencies are required:
 
 ---
 
