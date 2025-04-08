@@ -19,5 +19,5 @@ This project provides a Python script to extract attachments from MBOX files, su
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/yourusername/mbox-attachment-extractor.git
-   cd mbox-attachment-extractor
+   git clone https://github.com/jnuts74/mbox-extract.git
+   cd mbox-extract
