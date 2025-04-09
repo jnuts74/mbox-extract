@@ -29,3 +29,6 @@ Thumbs.db
 .idea/
 *.sublime-project
 *.sublime-workspace
+
+# Project documentation
+projectPlan.md
