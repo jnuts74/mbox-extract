@@ -1,63 +1,129 @@
+# Google Workspace Export Malware Scanner
 
 ---
 
-# MBOX Attachment Extractor
+## Overview
 
-This project provides a Python script to extract attachments from MBOX files, such as those provided by Google Takeout. The script parses the MBOX format and extracts email attachments into a specified directory.
+This project automates the extraction of email attachments and malware scanning from **multiple Google Workspace user exports**. It processes Google Takeout-style exports, extracts attachments from `.mbox` files, scans all files with **ClamAV** and **YARA**, and generates detailed per-user and global reports.
+
+---
 
 ## Features
 
-- Parses MBOX files to extract email attachments.
-- Supports output of extracted attachments to a specified directory.
-- Prints real-time progress of the scanning operation.
-- Handles filename sanitation to prevent directory traversal issues.
-- Does not require any external Python libraries beyond the standard library.
+- **Batch processing** of multiple user exports
+- **Automated extraction** of attachments from `.mbox` files
+- **Recursive scanning** of all files, including Drive and extracted attachments
+- **Dual malware detection** using ClamAV and YARA
+- **Skips `.mbox` files** during scanning to optimize performance
+- **Detailed Markdown reports** per user and globally
+- **Simple CLI interface** with minimal dependencies
 
-## Prerequisites
+---
 
-- Python 3.x
+## Setup Instructions
 
-## Setup
+### 1. Install Dependencies
 
-1. **Clone the Repository**
+- **Python 3.x**
+- **ClamAV** and **YARA CLI**
 
-   ```bash
-   git clone https://github.com/jnuts74/mbox-extract.git
-   cd mbox-extract
-   ```
+On Debian/Ubuntu:
+
+```bash
+sudo apt update
+sudo apt install clamav yara -y
+sudo freshclam
+```
+
+### 2. Prepare Environment
+
+(Optional but recommended)
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+pip install --upgrade pip
+```
+
+### 3. Virus Definitions
+
+Update ClamAV signatures:
+
+```bash
+sudo freshclam
+```
+
+---
 
 ## Usage
 
-To run the script, use the following command format:
+Run the main script with the **root exports directory** as argument:
 
 ```bash
-python3 mbox-extract.py <mbox_file> <output_directory>
+python3 google-export-scan.py /path/to/root_exports_folder
 ```
 
-- `<mbox_file>`: The path to the MBOX file you want to process.
-- `<output_directory>`: The directory where you want to save the extracted attachments.
+- The script will **automatically detect** if the folder contains multiple user exports or a single export.
+- It will **extract attachments first**, then **scan all files recursively**.
+- Reports will be saved in the root exports directory.
 
-### Example
+---
 
-Here's an example of how to use the script:
+## Process Flow
 
-```bash
-python3 mbox-extract.py mymail.mbox extracted-files
+```mermaid
+flowchart TD
+    style A fill:#cce5ff,stroke:#3399ff,color:#000
+    style B fill:#cce5ff,stroke:#3399ff,color:#000
+    style C fill:#cce5ff,stroke:#3399ff,color:#000
+    style D fill:#cce5ff,stroke:#3399ff,color:#000
+    style E fill:#cce5ff,stroke:#3399ff,color:#000
+    style F fill:#cce5ff,stroke:#3399ff,color:#000
+    style G fill:#cce5ff,stroke:#3399ff,color:#000
+    style H fill:#cce5ff,stroke:#3399ff,color:#000
+    style I fill:#cce5ff,stroke:#3399ff,color:#000
+
+    A([Root Exports Folder])
+    B{{For Each User Export}}
+    C([Locate .mbox Files in Mail/])
+    D([Extract Attachments to Folder])
+    E([Scan Entire User Export with YARA])
+    F([Scan Entire User Export with ClamAV])
+    G([Log YARA Detections])
+    H([Log ClamAV Detections])
+    I([Generate Reports])
+
+    A --> B
+    B --> C
+    C --> D
+    D --> E
+    E --> G
+    D --> F
+    F --> H
+    G --> I
+    H --> I
 ```
 
-In this example, the script will process `mymail.mbox` and save the extracted attachments into the `extracted-files` folder.
+---
 
-## How It Works
+## Reports
 
-- The script reads the MBOX file and iterates through each email message.
-- It checks each part of the message to determine if it's an attachment.
-- If an attachment is found, the filename is sanitized and saved to the specified output directory.
-- Progress is printed to the console as each message is processed.
+- **Per-user Markdown reports** saved in each user export folder
+- **Global consolidated report** saved in the root exports directory
+- Includes:
+  - File paths (relative)
+  - Detection source (ClamAV or YARA)
+  - Malware name or rule matched
+  - Scan timestamps and duration
 
-## Contributing
+---
 
-If you'd like to contribute to this project, please fork the repository and use a feature branch. Pull requests are warmly welcome.
+## Contribution
+
+Contributions are welcome! Please fork the repo, create a feature branch, and submit a pull request.
+
+---
 
 ## License
 
-This project is licensed under the MIT License. 
+This project is licensed under the MIT License.

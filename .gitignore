@@ -1,0 +1,31 @@
+# Ignore Google Takeout test data
+Takeout1
+Takeout2
+Takeout3
+google-exports
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+env/
+venv/
+ENV/
+.venv/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Logs and reports
+*.log
+*.tmp
+*.bak
+
+# IDE/editor folders
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
