@@ -35,15 +35,6 @@ sudo apt install clamav yara -y
 sudo freshclam
 ```
 
-### 2. Prepare Environment
-
-(Optional but recommended)
-
-```bash
-python3 -m venv venv
-source venv/bin/activate
-pip install --upgrade pip
-```
 
 ### 3. Virus Definitions
 
